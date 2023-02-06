@@ -17,9 +17,9 @@ class Board(object):
                                                  self.cell_size])
                 piece = self._cell[row][col]
                 if piece is not None:
-                    if piece.color() == "black":
+                    if piece.is_black():
                         color = (0, 0, 0)
-                    elif piece.color() == "white":
+                    elif piece.is_white():
                         color = (255, 255, 255)
                     pygame.draw.circle(screen, color, [(self.margin + self.cell_size) * col + self.cell_size // 2,
                                                        (self.margin + self.cell_size) * row + self.cell_size // 2],
