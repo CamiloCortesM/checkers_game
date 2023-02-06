@@ -1,5 +1,4 @@
 import pygame
-import cfg
 
 class Board(object):
     def __init__(self, length = 8):
@@ -18,9 +17,9 @@ class Board(object):
                                                  self.cell_size])
                 piece = self._cell[row][col]
                 if piece is not None:
-                    if piece == "black":
+                    if piece.color() == "black":
                         color = (0, 0, 0)
-                    elif piece == "white":
+                    elif piece.color() == "white":
                         color = (255, 255, 255)
                     pygame.draw.circle(screen, color, [(self.margin + self.cell_size) * col + self.cell_size // 2,
                                                        (self.margin + self.cell_size) * row + self.cell_size // 2],
@@ -57,7 +56,7 @@ class Board(object):
                     return False
         return True
     
-    def display(self, screen, count = None):
+    def display(self, screen,cfg, count = None):
         self.draw(screen)
         if count is not None:
             font = pygame.font.Font(cfg.FONTPATH, 36)
