@@ -7,7 +7,6 @@ class Board(object):
         self.cell_size = 60
         
     def draw(self, screen):
-        screen.fill((0,0,0))
         for row in range(self._length):
             for col in range(self._length):
                 color = (255, 253, 208) if (row + col) % 2 == 0 else (128, 70, 27)
@@ -24,12 +23,23 @@ class Board(object):
                     pygame.draw.circle(screen, color, [(self.cell_size) * col + self.cell_size // 2,
                                                        (self.cell_size) * row+20 + self.cell_size // 2],
                                                        self.cell_size // 3)
-        pygame.display.update()
+        
+    def draw_moves(self, moves,screen):
+        for move in moves:
+            pygame.draw.circle(screen, (0,255,0), [(self.cell_size) * move[1] + self.cell_size // 2,
+                                                       (self.cell_size) * move[0]+20 + self.cell_size // 2],
+                                                       self.cell_size // 4)
+            
+        
+        
     def get_length(self):
         return self._length
     
     def get_cells(self):
         return self._cell
+    
+    def get_cell_size(self):
+        return self.cell_size
     
     def is_free(self, row, col):
         return self._cell[row][col] is None
