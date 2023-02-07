@@ -1,5 +1,5 @@
 from piece import Piece
-from tools import get_moves,get_captures
+from tools import get_moves,get_captures,get_jumps
 
 def initialize(board):
     row = col = board.get_length()
@@ -70,3 +70,74 @@ def apply_move(board, move):
     else:
         raise RuntimeError("Invalid move, please type" \
                          + " \'hints\' to get suggestions.")
+        
+def apply_capture(board, capture_path):
+    counter = 0
+    while counter < len(capture_path)-1:
+        path = [capture_path[counter], capture_path[counter + 1]]
+        counter += 1
+        row,col = (path[0])
+        row_end,col_end = (path[1])
+        path_list = get_jumps(board, row, col, is_sorted = False)
+        
+        if path[1] in path_list:
+            piece = board.get(row, col)
+            if piece.is_black() and row_end == board.get_length()-1 \
+            or piece.is_white() and row_end == 0:
+                piece.turn_king()
+            board.remove(row, col)
+            row_eat, col_eat = max(row, row_end)-1, max(col, col_end)-1
+            board.remove(row_eat, col_eat)
+            board.place(row_end, col_end, piece)
+        else:
+            raise RuntimeError("Invalid jump/capture, please type" \
+                             + " \'hints\' to get suggestions.")
+
+def get_hints(board, color, is_sorted = False):
+    move = get_all_moves(board, color, is_sorted)
+    jump = get_all_captures(board, color, is_sorted)
+    if jump:
+        return ([], jump)
+    else:
+        return (move, jump)
+
+def get_winner(board, is_sorted = False):
+    black_hint = get_hints(board, 'black', is_sorted)
+    white_hint = get_hints(board, 'white', is_sorted)
+    if black_hint != ([],[]) and white_hint == ([],[]):
+        return 'black'
+    elif black_hint == ([],[]) and white_hint != ([],[]):
+        return 'white'
+    else:
+        black_king,white_king = 0,0
+        black, white = 0,0
+        row = col = board.get_length()
+        for r in range(row):
+            for c in range(col):
+                piece = board.get(r, c)
+                if piece:
+                    if piece.is_black():
+                        black += 1
+                        if piece.is_king():
+                            black_king += 1
+                    else:
+                        white += 1
+                        if piece.is_king():
+                            white_king += 1
+        if white_king == 1 and black_king == 1 and white == 1 and black == 1:
+            return 'draw'
+        else:
+            if white > black:
+                return 'white'
+            elif black > white:
+                return 'black'
+            else:
+                return 'draw'
+
+def is_game_finished(board, is_sorted = False):
+    black_hint = get_hints(board, 'black', is_sorted)
+    white_hint = get_hints(board, 'white', is_sorted)
+    if black_hint == ([],[]) or white_hint == ([],[]):
+        return True
+    else:
+        return False
