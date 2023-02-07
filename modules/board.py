@@ -4,26 +4,27 @@ class Board(object):
     def __init__(self, length = 8):
         self._length = length 
         self._cell = [[None for c in range(self._length)] for r in range(self._length)]
-        self.cell_size = 50
-        self.margin = 5
+        self.cell_size = 60
         
     def draw(self, screen):
+        screen.fill((0,0,0))
         for row in range(self._length):
             for col in range(self._length):
-                color = (255, 255, 255) if (row + col) % 2 == 0 else (0, 0, 0)
-                pygame.draw.rect(screen, color, [(self.margin + self.cell_size) * col + self.margin,
-                                                 (self.margin + self.cell_size) * row + self.margin,
+                color = (255, 253, 208) if (row + col) % 2 == 0 else (128, 70, 27)
+                pygame.draw.rect(screen, color, [(self.cell_size) * col,
+                                                 (self.cell_size) * row+20,
                                                  self.cell_size,
                                                  self.cell_size])
                 piece = self._cell[row][col]
                 if piece is not None:
                     if piece.is_black():
-                        color = (0, 0, 0)
+                        color = (255, 0, 0)
                     elif piece.is_white():
-                        color = (255, 255, 255)
-                    pygame.draw.circle(screen, color, [(self.margin + self.cell_size) * col + self.cell_size // 2,
-                                                       (self.margin + self.cell_size) * row + self.cell_size // 2],
-                                                       self.cell_size // 2 - self.margin)
+                        color = (255, 255,255)
+                    pygame.draw.circle(screen, color, [(self.cell_size) * col + self.cell_size // 2,
+                                                       (self.cell_size) * row+20 + self.cell_size // 2],
+                                                       self.cell_size // 3)
+        pygame.display.update()
     def get_length(self):
         return self._length
     

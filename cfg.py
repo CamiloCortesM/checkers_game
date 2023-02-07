@@ -1,6 +1,6 @@
 import os
 
-SCREENSIZE = (480,480)
+SCREENSIZE = (480,500)
 
 FONTPATH = os.path.join(os.getcwd(),'resources','font','FZSTK.TTF')
 

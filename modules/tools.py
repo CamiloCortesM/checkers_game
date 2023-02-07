@@ -75,18 +75,18 @@ def get_captures(board, row, col, is_sorted = False):
 
 def choose_color(screen,cfg):
     screen.fill((255,255,255))
-    font_title = pygame.font.Font(cfg.FONTPATH, 30)
-    font = pygame.font.Font(cfg.FONTPATH, 20)
-    tfont = font_title.render("Choose a color:",True,(0,0,0))
+    font_title = pygame.font.Font(cfg.FONTPATH, 45)
+    font = pygame.font.Font(cfg.FONTPATH, 25)
+    tfont = font_title.render("Choose a color:",True,(255,0,0))
     cfont1 = font.render("Enter w for play with white",True,(0,0,0))
     cfont2 = font.render("Enter b for play with black",True,(0,0,0))
     
     trect = tfont.get_rect()
     crect1 = cfont1.get_rect()
     crect2 = cfont2.get_rect()
-    trect.midtop = (cfg.SCREENSIZE[0]/2,cfg.SCREENSIZE[1]/4)
+    trect.midtop = (cfg.SCREENSIZE[0]/2,cfg.SCREENSIZE[1]/3.5)
     crect1.midtop = (cfg.SCREENSIZE[0]/2,cfg.SCREENSIZE[1]/2)
-    crect2.midtop = (cfg.SCREENSIZE[0]/2,cfg.SCREENSIZE[1]/1.5)
+    crect2.midtop = (cfg.SCREENSIZE[0]/2,cfg.SCREENSIZE[1]/1.7)
     
     screen.blit(tfont,trect)
     screen.blit(cfont1,crect1)
@@ -94,11 +94,11 @@ def choose_color(screen,cfg):
     
     while True:  
         for event in pygame.event.get():
-            if event.type == pygame.QUIT():
+            if event.type == pygame.QUIT:
                 pygame.quit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_w:
-                    return "white","black"
+                    return ("white","black")
                 elif event.key == pygame.K_b:
-                    return "black","white"           
+                    return ("black","white")           
         pygame.display.update()
