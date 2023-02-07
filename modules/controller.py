@@ -1,5 +1,5 @@
-from piece import Piece
-from tools import get_moves,get_captures,get_jumps
+from .piece import Piece
+from .tools import get_moves,get_captures,get_jumps
 
 def initialize(board):
     row = col = board.get_length()
