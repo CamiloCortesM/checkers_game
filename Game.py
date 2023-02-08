@@ -31,10 +31,12 @@ def main():
                     if piece_selected.color() == turn:
                         move_origin = (row,col)
                         moves = get_moves(board,row,col,my_color)
-                        jumps= get_jumps(board,row,col,my_color)
+                        jumps = get_jumps(board,row,col,my_color)
                         for jump in jumps:
                             moves.append(jump)
                         print(moves)
+                    else:
+                        piece_selected = None
                 if piece_selected and board.is_free(row,col):
                     move = [move_origin,(row,col)]
                     if apply_move(board,move,my_color):  
