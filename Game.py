@@ -16,7 +16,6 @@ def main():
     move_origin = None
     
     while not is_game_finished(board,my_color):
-        
         screen.fill((0,0,0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -44,6 +43,11 @@ def main():
                         move_origin = None
                         moves = None
                         turn = "red" if turn == "white" else "white"
+                    elif apply_capture(board,move,my_color):
+                        piece_selected = None
+                        move_origin = None
+                        moves = None
+                        turn = "red" if turn == "white" else "white" 
         board.draw(screen)
         piece_count = count_pieces(board)   
         board.display(screen,cfg,turn,piece_count)

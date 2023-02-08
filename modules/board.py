@@ -22,7 +22,17 @@ class Board(object):
                         color = (255, 255,255)
                     pygame.draw.circle(screen, color, [(self.cell_size) * col + self.cell_size // 2,
                                                        (self.cell_size) * row+20 + self.cell_size // 2],
-                                                       self.cell_size // 3)                   
+                                                       self.cell_size // 3) 
+                    if piece.is_king():
+                        # dibujar una corona
+                        x = (self.cell_size) * col + self.cell_size // 2
+                        y = ((self.cell_size) * row+20 + self.cell_size // 2)-6
+                        size = self.cell_size // 3
+                        crown_points = [(x, y - size), (x + size / 2, y - size / 2), (x + size, y - size),
+                        (x + size, y), (x + size / 2, y + size / 2), (x, y),
+                        (x - size / 2, y + size / 2), (x - size, y), (x - size, y - size),
+                        (x - size / 2, y - size / 2)]
+                        pygame.draw.polygon(screen, (255, 255, 0), crown_points, 0)                  
     def draw_moves(self, moves,screen):
         for move in moves:
             pygame.draw.circle(screen, (0,255,0), [(self.cell_size) * move[1] + self.cell_size // 2,

@@ -59,39 +59,48 @@ def apply_move(board, move,my_color):
     row,col = (move[0])
     row_end,col_end = (move[1])
     path_list = get_moves(board, row, col,my_color, is_sorted = False)
-    
     if move[1] in path_list:
         piece = board.get(row, col)
-        if piece.is_red() and row_end == board.get_length()-1 \
-        or piece.is_white() and row_end == 0:
-            piece.turn_king()
+        if my_color == "white":
+            if piece.is_red() and row_end == board.get_length()-1 \
+            or piece.is_white() and row_end == 0:
+                piece.turn_king()
+        else:
+            if piece.is_white() and row_end == board.get_length()-1 \
+            or piece.is_red() and row_end == 0:
+                piece.turn_king()
         board.remove(row, col)
         board.place(row_end, col_end, piece)
         return True
     else:
         return False
         
-def apply_capture(board, capture_path):
+def apply_capture(board, capture_path,my_color):
     counter = 0
     while counter < len(capture_path)-1:
         path = [capture_path[counter], capture_path[counter + 1]]
         counter += 1
         row,col = (path[0])
         row_end,col_end = (path[1])
-        path_list = get_jumps(board, row, col, is_sorted = False)
+        path_list = get_jumps(board, row, col,my_color, is_sorted = False)
         
         if path[1] in path_list:
             piece = board.get(row, col)
-            if piece.is_red() and row_end == board.get_length()-1 \
-            or piece.is_white() and row_end == 0:
-                piece.turn_king()
+            if my_color == "white":
+                if piece.is_red() and row_end == board.get_length()-1 \
+                or piece.is_white() and row_end == 0:
+                    piece.turn_king()
+            else:
+                if piece.is_white() and row_end == board.get_length()-1 \
+                or piece.is_red() and row_end == 0:
+                    piece.turn_king()
             board.remove(row, col)
             row_eat, col_eat = max(row, row_end)-1, max(col, col_end)-1
             board.remove(row_eat, col_eat)
             board.place(row_end, col_end, piece)
+            return True
         else:
-            raise RuntimeError("Invalid jump/capture, please type" \
-                             + " \'hints\' to get suggestions.")
+            return False
 
 def get_hints(board, color,mycolor, is_sorted = False):
     move = get_all_moves(board, color,mycolor, is_sorted)
