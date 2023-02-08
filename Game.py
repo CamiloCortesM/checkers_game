@@ -13,6 +13,7 @@ def main():
     piece_selected = None
     moves = None
     piece_count = None
+    move_origin = None
     
     while not is_game_finished(board,my_color):
         
@@ -28,8 +29,19 @@ def main():
                 if not board.is_free(row,col):
                     piece_selected = board.get(row,col)
                     if piece_selected.color() == turn:
+                        move_origin = (row,col)
                         moves = get_moves(board,row,col,my_color)
-                        
+                        jumps= get_jumps(board,row,col,my_color)
+                        for jump in jumps:
+                            moves.append(jump)
+                        print(moves)
+                if piece_selected and board.is_free(row,col):
+                    move = [move_origin,(row,col)]
+                    if apply_move(board,move,my_color):  
+                        piece_selected = None
+                        move_origin = None
+                        moves = None
+                        turn = "red" if turn == "white" else "white"
         board.draw(screen)
         piece_count = count_pieces(board)   
         board.display(screen,cfg,turn,piece_count)

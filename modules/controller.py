@@ -55,10 +55,10 @@ def get_all_captures(board, color,mycolor, is_sorted = False):
     return sorted(final_list, key = lambda x: (-len(x), x[0]))\
     if is_sorted else final_list
     
-def apply_move(board, move):
+def apply_move(board, move,my_color):
     row,col = (move[0])
     row_end,col_end = (move[1])
-    path_list = get_moves(board, row, col, is_sorted = False)
+    path_list = get_moves(board, row, col,my_color, is_sorted = False)
     
     if move[1] in path_list:
         piece = board.get(row, col)
@@ -67,9 +67,9 @@ def apply_move(board, move):
             piece.turn_king()
         board.remove(row, col)
         board.place(row_end, col_end, piece)
+        return True
     else:
-        raise RuntimeError("Invalid move, please type" \
-                         + " \'hints\' to get suggestions.")
+        return False
         
 def apply_capture(board, capture_path):
     counter = 0
