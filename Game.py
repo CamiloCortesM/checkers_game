@@ -9,7 +9,7 @@ def main():
     (my_color, opponent_color) = tools.choose_color(screen,cfg)
     print(my_color,opponent_color)
     board = Board(8)
-    turn = my_color if my_color == 'black' else opponent_color
+    turn = my_color if my_color == 'red' else opponent_color
     initialize(board)
     piece_selected = None
     moves = None
@@ -26,7 +26,6 @@ def main():
                 if not board.is_free(row,col):
                     piece_selected = board.get(row,col)
                     if piece_selected.color() == turn:
-                        print("hola")
                         moves = get_moves(board,row,col)
                         
         board.draw(screen)

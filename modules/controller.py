@@ -13,16 +13,16 @@ def initialize(board):
             
 def count_pieces(board):
     row = col = board.get_length()
-    black, white = 0, 0
+    red, white = 0, 0
     for r in range(row):
         for c in range(col):
             piece = board.get(r, c)
             if piece:
-                if piece.is_black():
-                    black += 1
+                if piece.is_red():
+                    red += 1
                 if piece.is_white():
                     white += 1
-    return (black, white)
+    return (red, white)
 
 def get_all_moves(board, color, is_sorted = False):
     row = col = board.get_length()
@@ -62,7 +62,7 @@ def apply_move(board, move):
     
     if move[1] in path_list:
         piece = board.get(row, col)
-        if piece.is_black() and row_end == board.get_length()-1 \
+        if piece.is_red() and row_end == board.get_length()-1 \
         or piece.is_white() and row_end == 0:
             piece.turn_king()
         board.remove(row, col)
@@ -82,7 +82,7 @@ def apply_capture(board, capture_path):
         
         if path[1] in path_list:
             piece = board.get(row, col)
-            if piece.is_black() and row_end == board.get_length()-1 \
+            if piece.is_red() and row_end == board.get_length()-1 \
             or piece.is_white() and row_end == 0:
                 piece.turn_king()
             board.remove(row, col)
@@ -102,42 +102,42 @@ def get_hints(board, color, is_sorted = False):
         return (move, jump)
 
 def get_winner(board, is_sorted = False):
-    black_hint = get_hints(board, 'black', is_sorted)
+    red_hint = get_hints(board, 'red', is_sorted)
     white_hint = get_hints(board, 'white', is_sorted)
-    if black_hint != ([],[]) and white_hint == ([],[]):
-        return 'black'
-    elif black_hint == ([],[]) and white_hint != ([],[]):
+    if red_hint != ([],[]) and white_hint == ([],[]):
+        return 'red'
+    elif red_hint == ([],[]) and white_hint != ([],[]):
         return 'white'
     else:
-        black_king,white_king = 0,0
-        black, white = 0,0
+        red_king,white_king = 0,0
+        red, white = 0,0
         row = col = board.get_length()
         for r in range(row):
             for c in range(col):
                 piece = board.get(r, c)
                 if piece:
-                    if piece.is_black():
-                        black += 1
+                    if piece.is_red():
+                        red += 1
                         if piece.is_king():
-                            black_king += 1
+                            red_king += 1
                     else:
                         white += 1
                         if piece.is_king():
                             white_king += 1
-        if white_king == 1 and black_king == 1 and white == 1 and black == 1:
+        if white_king == 1 and red_king == 1 and white == 1 and red == 1:
             return 'draw'
         else:
-            if white > black:
+            if white > red:
                 return 'white'
-            elif black > white:
-                return 'black'
+            elif red > white:
+                return 'red'
             else:
                 return 'draw'
 
 def is_game_finished(board, is_sorted = False):
-    black_hint = get_hints(board, 'black', is_sorted)
+    red_hint = get_hints(board, 'red', is_sorted)
     white_hint = get_hints(board, 'white', is_sorted)
-    if black_hint == ([],[]) or white_hint == ([],[]):
+    if red_hint == ([],[]) or white_hint == ([],[]):
         return True
     else:
         return False

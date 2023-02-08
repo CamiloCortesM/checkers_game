@@ -16,7 +16,7 @@ class Board(object):
                                                  self.cell_size])
                 piece = self._cell[row][col]
                 if piece is not None:
-                    if piece.is_black():
+                    if piece.is_red():
                         color = (255, 0, 0)
                     elif piece.is_white():
                         color = (255, 255,255)
@@ -71,5 +71,5 @@ class Board(object):
         self.draw(screen)
         if count is not None:
             font = pygame.font.Font(cfg.FONTPATH, 36)
-            text = font.render("Black: {:d}, White: {:d}".format(count[0], count[1]), True, (255, 255, 255))
+            text = font.render("Red: {:d}, White: {:d}".format(count[0], count[1]), True, (255, 255, 255))
             screen.blit(text, [10, 10])

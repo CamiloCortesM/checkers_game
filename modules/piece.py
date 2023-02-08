@@ -1,21 +1,21 @@
 class Piece(object):
 
-    def __init__(self, color = 'black', is_king = False):
+    def __init__(self, color = 'red', is_king = False):
         if color.isalpha():
             color = color.lower()
-            if color == 'black' or color == 'white':
+            if color == 'red' or color == 'white':
                 self._color = color
                 self._is_king  = is_king
             else:
-                raise ValueError("A piece must be \'black\' or \'white\'.")
+                raise ValueError("A piece must be \'red\' or \'white\'.")
         else:
-            raise ValueError("A piece must be \'black\' or \'white\'.")
+            raise ValueError("A piece must be \'red\' or \'white\'.")
         
     def color(self):
         return self._color
         
-    def is_black(self):
-        return self._color == 'black'
+    def is_red(self):
+        return self._color == 'red'
     
     def is_white(self):
         return self._color == 'white'

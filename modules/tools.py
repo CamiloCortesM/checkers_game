@@ -8,9 +8,9 @@ def get_moves(board, row, col, is_sorted = False):
     if piece:
         bottom = [(row + x, col + y) for (x, y) in down if (0 <= (row + x) < length) and (0 <= (col + y) < length) and board.is_free(row + x, col + y)]
         top = [(row + x, col + y) for (x, y) in up if (0 <= (row + x) < length) and (0 <= (col + y) < length) and board.is_free(row + x, col + y)]
-        return (sorted(bottom + top) if piece.is_king() else (sorted(bottom) if piece.is_black() else sorted(top))) \
+        return (sorted(bottom + top) if piece.is_king() else (sorted(bottom) if piece.is_red() else sorted(top))) \
                     if is_sorted else (bottom + top if piece.is_king() else \
-                                       (bottom if piece.is_black() else top))
+                                       (bottom if piece.is_red() else top))
     return []
 
 def get_jumps(board, row, col, is_sorted = False):
@@ -33,9 +33,9 @@ def get_jumps(board, row, col, is_sorted = False):
                  and (not board.is_free(row + x, col + y)) \
                  and (board.get(row + x, col + y).color() != piece.color())]
         return (sorted(bottom + top) if piece.is_king() else \
-                (sorted(bottom) if piece.is_black() else sorted(top))) \
+                (sorted(bottom) if piece.is_red() else sorted(top))) \
                     if is_sorted else (bottom + top if piece.is_king() else \
-                                       (bottom if piece.is_black() else top))
+                                       (bottom if piece.is_red() else top))
     return []
 
 def search_path(board, row, col, path, paths, is_sorted = False):
@@ -50,7 +50,7 @@ def search_path(board, row, col, path, paths, is_sorted = False):
             piece = copy.copy(board.get(row, col))
             board.remove(row, col)
             board.place(row_to, col_to, piece)
-            if (piece.color() == 'black' \
+            if (piece.color() == 'red' \
                 and row_to == board.get_length() - 1) \
                     or (piece.color() == 'white' \
                         and row_to == 0) \
@@ -79,7 +79,7 @@ def choose_color(screen,cfg):
     font = pygame.font.Font(cfg.FONTPATH, 25)
     tfont = font_title.render("Choose a color:",True,(255,0,0))
     cfont1 = font.render("Enter w for play with white",True,(0,0,0))
-    cfont2 = font.render("Enter b for play with black",True,(0,0,0))
+    cfont2 = font.render("Enter r for play with red",True,(0,0,0))
     
     trect = tfont.get_rect()
     crect1 = cfont1.get_rect()
@@ -98,7 +98,7 @@ def choose_color(screen,cfg):
                 pygame.quit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_w:
-                    return ("white","black")
-                elif event.key == pygame.K_b:
-                    return ("black","white")           
+                    return ("white","red")
+                elif event.key == pygame.K_r:
+                    return ("red","white")           
         pygame.display.update()
