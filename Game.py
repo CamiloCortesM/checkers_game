@@ -7,13 +7,15 @@ def main():
     screen = pygame.display.set_mode(cfg.SCREENSIZE)
     pygame.display.set_caption("Damas Inglesas")
     (my_color, opponent_color) = tools.choose_color(screen,cfg)
-    print(my_color,opponent_color)
     board = Board(8)
     turn = my_color if my_color == 'red' else opponent_color
-    initialize(board)
+    initialize(board,my_color)
     piece_selected = None
     moves = None
-    while not is_game_finished(board):
+    piece_count = None
+    
+    while not is_game_finished(board,my_color):
+        
         screen.fill((0,0,0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -26,9 +28,11 @@ def main():
                 if not board.is_free(row,col):
                     piece_selected = board.get(row,col)
                     if piece_selected.color() == turn:
-                        moves = get_moves(board,row,col)
+                        moves = get_moves(board,row,col,my_color)
                         
         board.draw(screen)
+        piece_count = count_pieces(board)   
+        board.display(screen,cfg,turn,piece_count)
         if moves: board.draw_moves(moves,screen)
         pygame.display.update()
                 

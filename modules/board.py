@@ -22,16 +22,12 @@ class Board(object):
                         color = (255, 255,255)
                     pygame.draw.circle(screen, color, [(self.cell_size) * col + self.cell_size // 2,
                                                        (self.cell_size) * row+20 + self.cell_size // 2],
-                                                       self.cell_size // 3)
-        
+                                                       self.cell_size // 3)                   
     def draw_moves(self, moves,screen):
         for move in moves:
             pygame.draw.circle(screen, (0,255,0), [(self.cell_size) * move[1] + self.cell_size // 2,
                                                        (self.cell_size) * move[0]+20 + self.cell_size // 2],
-                                                       self.cell_size // 4)
-            
-        
-        
+                                                       self.cell_size // 4)  
     def get_length(self):
         return self._length
     
@@ -67,9 +63,13 @@ class Board(object):
                     return False
         return True
     
-    def display(self, screen,cfg, count = None):
-        self.draw(screen)
+    def display(self, screen,cfg,turn, count = None):
+        font = pygame.font.Font(cfg.FONTPATH, 20)
+        text_string = "turn to play for: {}".format(turn)
+        text_turn = font.render(text_string, True, (255, 255, 255))
+        trect = text_turn.get_rect()
+        trect.topright = (cfg.SCREENSIZE[0],-2)
+        screen.blit(text_turn,trect)
         if count is not None:
-            font = pygame.font.Font(cfg.FONTPATH, 36)
             text = font.render("Red: {:d}, White: {:d}".format(count[0], count[1]), True, (255, 255, 255))
-            screen.blit(text, [10, 10])
+            screen.blit(text, [0, -2])
