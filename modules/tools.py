@@ -114,3 +114,25 @@ def choose_color(screen,cfg):
                 elif event.key == pygame.K_r:
                     return ("red","white")           
         pygame.display.update()
+
+def endInterface (screen,winner,cfg):
+    screen.fill((255,255,255))
+    font_title = pygame.font.Font(cfg.FONTPATH, 45)
+    font = pygame.font.Font(cfg.FONTPATH, 25)
+    title = font_title.render("El Juego ha terminado",True,(255,0,0))
+    cfont = font.render("the winner is: {}".format(winner),True,(0,0,0))
+    trect = title.get_rect()
+    crect = cfont.get_rect()
+    trect.midtop = (cfg.SCREENSIZE[0]/2,cfg.SCREENSIZE[1]/3.5)
+    crect.midtop = (cfg.SCREENSIZE[0]/2,cfg.SCREENSIZE[1]/1.8)
+    
+    screen.blit(title,trect)
+    screen.blit(cfont,crect)
+    
+    while True:  
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()         
+        pygame.display.update()
+
+    

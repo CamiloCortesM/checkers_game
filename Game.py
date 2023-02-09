@@ -53,7 +53,7 @@ def main():
         board.display(screen,cfg,turn,piece_count)
         if moves: board.draw_moves(moves,screen)
         pygame.display.update()
-                
+    endInterface(screen,"white",cfg)         
 
 
 if __name__ == '__main__':
