@@ -119,7 +119,7 @@ def endInterface (screen,winner,cfg):
     screen.fill((255,255,255))
     font_title = pygame.font.Font(cfg.FONTPATH, 45)
     font = pygame.font.Font(cfg.FONTPATH, 25)
-    title = font_title.render("El Juego ha terminado",True,(255,0,0))
+    title = font_title.render("The game is over",True,(255,0,0))
     cfont = font.render("the winner is: {}".format(winner),True,(0,0,0))
     trect = title.get_rect()
     crect = cfont.get_rect()
