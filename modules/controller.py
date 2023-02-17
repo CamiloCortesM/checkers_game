@@ -11,6 +11,18 @@ def initialize(board,mycolor):
         for c in range(0 if r % 2 == 1 else 1, col, 2):
             board.place(r, c, Piece('white' if mycolor=='red' else 'red'))
             
+def find_jump(board,my_color,turn):
+    jumps = []
+    for row in range(8):
+            for col in range(8):
+                piece_selected = board.get(row,col)
+                if piece_selected:
+                    if piece_selected.color() == turn:
+                        jump = get_jumps(board,row,col,my_color)
+                        if len(jump)>0:
+                            jumps.append([(row,col),jump])
+    return jumps
+                
 def count_pieces(board):
     row = col = board.get_length()
     red, white = 0, 0
