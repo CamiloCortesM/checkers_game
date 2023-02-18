@@ -7,14 +7,18 @@ def main():
     screen = pygame.display.set_mode(cfg.SCREENSIZE)
     pygame.display.set_caption("Damas Inglesas")
     board = Board(8)
-    game_play_human(screen,board)
+    game = choose_game(screen,cfg)
+    print(game)
+    # game_play_human(screen,board)
       
     
-def game_play_human_vs_ai():
-    print('game play with guman vs ai')
+def game_play_human_vs_ai(screen,board):
+    (my_color, opponent_color) = tools.choose_color(screen,cfg)
+    turn = my_color if my_color == 'red' else opponent_color
+    initialize(board,my_color)
 
 def game_play_human(screen,board):
-    (my_color, opponent_color) = tools.choose_color(screen,cfg)
+    (my_color, opponent_color) = ("red","white")
     turn = my_color if my_color == 'red' else opponent_color
     initialize(board,my_color)
     piece_selected = None

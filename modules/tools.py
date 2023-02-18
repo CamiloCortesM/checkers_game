@@ -85,6 +85,51 @@ def get_captures(board, row, col,mycolor, is_sorted = False):
         paths = []
     return paths
 
+def choose_game(screen,cfg):
+    screen.fill((255,255,255))
+    font_title = pygame.font.Font(cfg.FONTPATH, 45)
+    font = pygame.font.Font(cfg.FONTPATH, 25)
+    tfont = font_title.render("Choose game mode:",True,(255,0,0))
+    cfont1 = font.render("Enter 1 for play human vs AI",True,(0,0,0))
+    cfont2 = font.render("Enter 2 for play human vs human",True,(0,0,0))
+    cfont3 = font.render("Enter 3 for play AI vs AI",True,(0,0,0))
+    cfont4 = font.render("Enter 4 for play ONLINE",True,(0,0,0))
+    
+    trect = tfont.get_rect()
+    crect1 = cfont1.get_rect()
+    crect2 = cfont2.get_rect()
+    crect3 = cfont3.get_rect()
+    crect4 = cfont4.get_rect()
+    
+    trect.midtop = (cfg.SCREENSIZE[0]/2,cfg.SCREENSIZE[1]/5)
+    crect1.midtop = (cfg.SCREENSIZE[0]/2,cfg.SCREENSIZE[1]/2.5)
+    crect2.midtop = (cfg.SCREENSIZE[0]/2,cfg.SCREENSIZE[1]/2)
+    crect3.midtop = (cfg.SCREENSIZE[0]/2,cfg.SCREENSIZE[1]/1.66)
+    crect4.midtop = (cfg.SCREENSIZE[0]/2,cfg.SCREENSIZE[1]/1.42)
+    
+    screen.blit(tfont,trect)
+    screen.blit(cfont1,crect1)
+    screen.blit(cfont2,crect2)
+    screen.blit(cfont3,crect3)
+    screen.blit(cfont4,crect4)
+    
+    while True:  
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    return 1
+                elif event.key == pygame.K_2:
+                    return 2           
+                elif event.key == pygame.K_3:
+                    return 3           
+                elif event.key == pygame.K_4:
+                    return 4           
+        pygame.display.update()
+    
+    
+    
 def choose_color(screen,cfg):
     screen.fill((255,255,255))
     font_title = pygame.font.Font(cfg.FONTPATH, 45)
