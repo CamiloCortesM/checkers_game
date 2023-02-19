@@ -92,3 +92,60 @@ def transition(state, action, ttype):
     return (board, turn, depth)
 
 
+def maxvalue(state, maxdepth, alpha = None, beta = None):
+    """
+    The maxvalue function for the adversarial tree search.
+    """
+    board,turn = state[0],state[1]
+    if is_terminal(state, maxdepth):
+        return utility(state)
+    else:
+        v = float('-inf')
+        (moves, captures) = controller.get_hints(board, turn)
+        if captures:
+            for a in captures:
+                v = max(v, minvalue(transition(state, a, "jump"), \
+                        maxdepth, alpha, beta))
+                if alpha is not None and beta is not None:
+                    if v >= beta:
+                        return v
+                    alpha = max(alpha, v)
+            return v
+        elif moves:
+            for a in moves:
+                v = max(v, minvalue(transition(state, a, "move"), \
+                        maxdepth, alpha, beta))
+                if alpha is not None and beta is not None:
+                    if v >= beta:
+                        return v
+                    alpha = max(alpha, v)
+            return v            
+
+def minvalue(state, maxdepth, alpha = None, beta = None):
+    """
+    The minvalue function for the adversarial tree search.
+    """
+    board,turn = state[0],state[1]
+    if is_terminal(state, maxdepth):
+        return utility(state)
+    else:
+        v = float('inf')
+        (moves, captures) = controller.get_hints(board, turn)
+        if captures:
+            for a in captures:
+                v = min(v, maxvalue(transition(state, a, "jump"), \
+                                     maxdepth, alpha, beta))
+                if alpha is not None and beta is not None:
+                    if v <= alpha:
+                        return v
+                    beta = min(beta, v)
+            return v
+        elif moves:
+            for a in moves:
+                v = min(v, maxvalue(transition(state, a, "move"), \
+                                     maxdepth, alpha, beta))
+                if alpha is not None and beta is not None:
+                    if v <= alpha:
+                        return v
+                    beta = min(beta, v)
+            return v
