@@ -188,3 +188,15 @@ def alphabeta_search(state, maxdepth = None):
                              for a in moves], key = lambda v: v[1])
     else:
         return ("pass", -1)
+    
+
+def get_next_move(board, turn):
+    """
+    function to obtain the best play with alphabeta_search
+    
+    - tree with six levels is alphabeta_search(state, 6)
+    """
+    state = (board, turn, 0)
+    print("Thinking ...")
+    move = alphabeta_search(state, 6)
+    return move[0]
