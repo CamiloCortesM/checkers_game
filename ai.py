@@ -165,3 +165,26 @@ def minimax_search(state, maxdepth = None):
                         for a in moves], key = lambda v: v[1])        
     else: 
         return ("pass", -1)
+
+
+def alphabeta_search(state, maxdepth = None):
+    """
+    Searching for alpha-beta trees of limited depth
+    """
+    board = state[0]
+    turn = state[1]
+    (moves, captures) = controller.get_hints(board, turn)
+    alpha = float('-inf')
+    beta = float('inf')
+    if captures:
+        return max([\
+            (a, minvalue(transition(state, a, "jump"), \
+                         maxdepth, alpha, beta)) \
+                             for a in captures], key = lambda v: v[1])
+    elif moves:
+        return max([\
+            (a, minvalue(transition(state, a, "move"), \
+                         maxdepth, alpha, beta)) \
+                             for a in moves], key = lambda v: v[1])
+    else:
+        return ("pass", -1)
