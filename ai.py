@@ -5,7 +5,6 @@ def heuristics(state):
     
     """
     This heuristic function calculates the search metrics of the alpha beta algorithm according to the utility values for:
-
         a. Normalized utility values from the number of pawn and king pieces on the board.
         b. Normalized utility values from the number of captures that could be made by kings and pawns.
         c. Normalized utility values from the distances of pawns to become kings.
@@ -56,3 +55,9 @@ def heuristics(state):
         white_safe_heuristics = 5.263 * ((w_safe - r_safe)/(1.0 + r_safe + w_safe))
         return white_count_heuristics + white_capture_heuristics + white_kingdist_heuristics + white_safe_heuristics
                     
+                    
+def utility(state):
+    """
+    This function calculates the utility of a node, if it is a terminal node.
+    """
+    return heuristics(state)
