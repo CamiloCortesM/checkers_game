@@ -61,3 +61,15 @@ def utility(state):
     This function calculates the utility of a node, if it is a terminal node.
     """
     return heuristics(state)
+
+def is_terminal(state, maxdepth = None):
+    """
+    Determines if a tree node is a terminal or not.
+    Returns boolean True/False.
+    """
+    board,turn,depth = state
+    (moves, captures) = controller.get_hints(board, turn)
+    if maxdepth is not None:
+        return ((not moves) and (not captures)) or depth >= maxdepth
+    else:
+        return ((not moves) and (not captures))
