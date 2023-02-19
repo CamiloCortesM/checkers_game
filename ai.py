@@ -149,3 +149,19 @@ def minvalue(state, maxdepth, alpha = None, beta = None):
                         return v
                     beta = min(beta, v)
             return v
+
+def minimax_search(state, maxdepth = None):
+    """
+    The depth limited minimax tree search.
+    """
+    board = state[0]
+    turn = state[1]
+    (moves, captures) = controller.get_hints(board, turn)
+    if captures:
+        return max([(a, minvalue(transition(state, a, "jump"), maxdepth)) \
+                        for a in captures], key = lambda v: v[1])
+    elif moves:
+        return max([(a, minvalue(transition(state, a, "move"), maxdepth)) \
+                        for a in moves], key = lambda v: v[1])        
+    else: 
+        return ("pass", -1)
