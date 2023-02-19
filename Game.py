@@ -43,7 +43,7 @@ def choose_game(screen,cfg):
                 elif event.key == pygame.K_3:
                     game_play_ai_vs_ai(screen,board)           
                 elif event.key == pygame.K_4:
-                    return 4           
+                    game_play_socket(screen,board)          
         pygame.display.update()
 
 def main():
@@ -51,7 +51,9 @@ def main():
     screen = pygame.display.set_mode(cfg.SCREENSIZE)
     pygame.display.set_caption("Damas Inglesas")
     choose_game(screen,cfg)
-      
+   
+def game_play_socket(screen,board):
+    print("coming soon")  
     
 def game_play_ai_vs_ai(screen,board):
     my_color,opponent_color = 'red','white'
