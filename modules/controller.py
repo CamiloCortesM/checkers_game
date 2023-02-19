@@ -2,15 +2,15 @@ from .piece import Piece
 from .tools import get_moves, get_captures, get_jumps
 
 
-def initialize(board, mycolor):
+def initialize(board, my_color = "white"):
     row = col = board.get_length()
     initrows = (row // 2) - 1
     for r in range(row - 1, row - (initrows + 1), -1):
         for c in range(0 if r % 2 == 1 else 1, col, 2):
-            board.place(r, c, Piece(mycolor))
+            board.place(r, c, Piece(my_color))
     for r in range(0, initrows):
         for c in range(0 if r % 2 == 1 else 1, col, 2):
-            board.place(r, c, Piece('white' if mycolor == 'red' else 'red'))
+            board.place(r, c, Piece('white' if my_color == 'red' else 'red'))
 
 
 def find_jump(board, my_color, turn):
@@ -40,7 +40,7 @@ def count_pieces(board):
     return (red, white)
 
 
-def get_all_moves(board, color, mycolor, is_sorted=False,):
+def get_all_moves(board, color, my_color = "white", is_sorted=False,):
     row = col = board.get_length()
     final_list = []
     for r in range(row):
@@ -48,7 +48,7 @@ def get_all_moves(board, color, mycolor, is_sorted=False,):
             piece = board.get(r, c)
             if piece:
                 if piece.color() == color:
-                    path_list = get_moves(board, r, c, is_sorted, mycolor)
+                    path_list = get_moves(board, r, c, is_sorted, my_color)
                     path_start = (r, c)
                     for path in path_list:
                         final_list.append((path_start, path))
@@ -58,7 +58,7 @@ def get_all_moves(board, color, mycolor, is_sorted=False,):
     return final_list
 
 
-def get_all_captures(board, color, mycolor, is_sorted=False):
+def get_all_captures(board, color,  my_color = "white", is_sorted=False):
     row = col = board.get_length()
     final_list = []
     for r in range(row):
@@ -66,14 +66,14 @@ def get_all_captures(board, color, mycolor, is_sorted=False):
             piece = board.get(r, c)
             if piece:
                 if piece.color() == color:
-                    path_list = get_captures(board, r, c, mycolor, is_sorted)
+                    path_list = get_captures(board, r, c, my_color, is_sorted)
                     for path in path_list:
                         final_list.append(path)
     return sorted(final_list, key=lambda x: (-len(x), x[0]))\
         if is_sorted else final_list
 
 
-def apply_move(board, move, my_color):
+def apply_move(board, move, my_color = "white"):
     row, col = (move[0])
     row_end, col_end = (move[1])
     path_list = get_moves(board, row, col, my_color, is_sorted=False)
@@ -94,7 +94,7 @@ def apply_move(board, move, my_color):
         return False
 
 
-def apply_capture(board, capture_path, my_color):
+def apply_capture(board, capture_path,  my_color = "white"):
     counter = 0
     while counter < len(capture_path)-1:
         path = [capture_path[counter], capture_path[counter + 1]]
@@ -122,9 +122,9 @@ def apply_capture(board, capture_path, my_color):
             return False
 
 
-def get_hints(board, color, mycolor, is_sorted=False):
-    move = get_all_moves(board, color, mycolor, is_sorted)
-    jump = get_all_captures(board, color, mycolor, is_sorted)
+def get_hints(board, color,my_color = "white", is_sorted=False):
+    move = get_all_moves(board, color, my_color, is_sorted)
+    jump = get_all_captures(board, color, my_color, is_sorted)
     if jump:
         return ([], jump)
     else:
@@ -158,9 +158,9 @@ def get_winner(board, is_sorted=False):
             return 'draw'
 
 
-def is_game_finished(board, mycolor, is_sorted=False):
-    red_hint = get_hints(board, 'red', is_sorted, mycolor)
-    white_hint = get_hints(board, 'white', is_sorted, mycolor)
+def is_game_finished(board, my_color = "white", is_sorted=False):
+    red_hint = get_hints(board, 'red', is_sorted, my_color)
+    white_hint = get_hints(board, 'white', is_sorted, my_color)
     if red_hint == ([], []) or white_hint == ([], []):
         return True
     else:

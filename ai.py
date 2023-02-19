@@ -73,3 +73,22 @@ def is_terminal(state, maxdepth = None):
         return ((not moves) and (not captures)) or depth >= maxdepth
     else:
         return ((not moves) and (not captures))
+    
+    
+def transition(state, action, ttype):
+    """
+    This is the transition function. Given a board state and action,
+    it transitions to the next board state.
+    """
+    board = copy.deepcopy(state[0])
+    turn = state[1]
+    depth = state[2]
+    if ttype == "move":
+        controller.apply_move(board, action)
+    elif ttype == "jump":
+        controller.apply_capture(board, action)
+    turn = 'white' if state[1] == 'black' else 'black'
+    depth += 1
+    return (board, turn, depth)
+
+
