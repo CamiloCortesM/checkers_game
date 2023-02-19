@@ -87,7 +87,7 @@ def transition(state, action, ttype):
         controller.apply_move(board, action)
     elif ttype == "jump":
         controller.apply_capture(board, action)
-    turn = 'white' if state[1] == 'black' else 'black'
+    turn = 'white' if state[1] == 'red' else 'red'
     depth += 1
     return (board, turn, depth)
 
