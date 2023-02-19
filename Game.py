@@ -1,6 +1,7 @@
 import pygame
 import cfg
 from modules import *
+import ai as ai
 
 def choose_game(screen,cfg):
     board = Board(8)
@@ -57,24 +58,32 @@ def game_play_socket(screen,board):
     
 def game_play_ai_vs_ai(screen,board):
     my_color,opponent_color = 'red','white'
-    initialize(board,my_color)
+    initialize(board)
     
 def game_play_human_vs_ai(screen,board):
     (my_color, opponent_color) = tools.choose_color(screen,cfg)
     turn = my_color if my_color == 'red' else opponent_color
-    initialize(board,my_color)
+    initialize(board)
     piece_selected = None
     moves = []
     piece_count = None
     move_origin = None
     pre_moves = []
     jumps = []
-    while not is_game_finished(board,my_color):
-        if turn == opponent_color:
-            print("Move AI")
-            turn = my_color
-            continue
-        jumps = find_jump(board,my_color,turn)
+    while not is_game_finished(board):
+        
+        if turn == opponent_color: # if Turn of machine
+                move = ai.get_next_move(board, turn)
+                if type(move) == list: # move is a move
+                    apply_capture(board, move)
+                if type(move) == tuple: # move is a jump
+                    apply_move(board, move)
+                print("\t{:s} played {:s}.".format(turn, str(move)))
+                turn = my_color # change the turn
+                continue
+            
+        jumps = find_jump(board,turn)
+        
         if len(jumps)>0 and moves==[]: 
             for jump in jumps:    
                 move_origin,moves_jumps = jump
@@ -82,6 +91,7 @@ def game_play_human_vs_ai(screen,board):
                     moves.append(mv)
                     pre_moves.append([move_origin,mv])
             move_origin = None
+            
         screen.fill((0,0,0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -95,17 +105,17 @@ def game_play_human_vs_ai(screen,board):
                     piece_selected = board.get(row,col)
                     if piece_selected.color() == turn:
                         move_origin = (row,col)
-                        moves = get_moves(board,row,col,my_color)
+                        moves = get_moves(board,row,col)
                     else:
                         piece_selected = None
                 if piece_selected and board.is_free(row,col):
                     move = [move_origin,(row,col)]
-                    if apply_move(board,move,my_color):  
+                    if apply_move(board,move):  
                         piece_selected = None
                         move_origin = None
                         moves = []
                         turn = "red" if turn == "white" else "white"
-                    elif apply_capture(board,move,my_color):
+                    elif apply_capture(board,move):
                         piece_selected = None
                         move_origin = None
                         moves = []
@@ -115,10 +125,10 @@ def game_play_human_vs_ai(screen,board):
                         for move_jump in pre_moves:
                             if move_jump[1] == (row,col):
                                move = move_jump
-                        if apply_capture(board,move,my_color):
+                        if apply_capture(board,move):
                            moves = []
                            pre_moves = []
-                           jumps = get_jumps(board,row,col,my_color)
+                           jumps = get_jumps(board,row,col)
                            if len(jumps)>0:
                                break
                            turn = "red" if turn == "white" else "white"       

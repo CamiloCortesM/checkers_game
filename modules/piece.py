@@ -1,6 +1,6 @@
 class Piece(object):
 
-    def __init__(self, color, is_king = False):
+    def __init__(self, color = 'red', is_king = False):
         if color.isalpha():
             color = color.lower()
             if color == 'red' or color == 'white':

@@ -1,7 +1,7 @@
 import copy
 import pygame
 
-def get_moves(board, row, col,my_color, is_sorted = False):
+def get_moves(board, row, col, is_sorted = False):
     down, up = [(+1, -1), (+1, +1)], [(-1, -1), (-1, +1)]
     length = board.get_length()
     piece = board.get(row, col)
@@ -9,17 +9,12 @@ def get_moves(board, row, col,my_color, is_sorted = False):
         bottom = [(row + x, col + y) for (x, y) in down if (0 <= (row + x) < length) and (0 <= (col + y) < length) and board.is_free(row + x, col + y)]
         top = [(row + x, col + y) for (x, y) in up if (0 <= (row + x) < length) and (0 <= (col + y) < length) and board.is_free(row + x, col + y)]
         
-        if my_color == "white":
-            return (sorted(bottom + top) if piece.is_king() else (sorted(bottom) if piece.is_red() else sorted(top))) \
-                    if is_sorted else (bottom + top if piece.is_king() else \
-                                       (bottom if piece.is_red() else top))
-        else:
-            return (sorted(bottom + top) if piece.is_king() else (sorted(bottom) if piece.is_white() else sorted(top))) \
-                    if is_sorted else (bottom + top if piece.is_king() else \
-                                       (bottom if piece.is_white() else top))
+        return (sorted(bottom + top) if piece.is_king() else (sorted(bottom) if piece.is_red() else sorted(top))) \
+                if is_sorted else (bottom + top if piece.is_king() else \
+                                    (bottom if piece.is_red() else top))
     return []
 
-def get_jumps(board, row, col,my_color, is_sorted = False):
+def get_jumps(board, row, col, is_sorted = False):
     down, up = [(+1, -1), (+1, +1)], [(-1, -1), (-1, +1)]
     length = board.get_length()
     piece = board.get(row, col)
@@ -38,22 +33,16 @@ def get_jumps(board, row, col,my_color, is_sorted = False):
                  and board.is_free(row + 2 * x, col + 2 * y) \
                  and (not board.is_free(row + x, col + y)) \
                  and (board.get(row + x, col + y).color() != piece.color())]
-        if my_color =="white":
-            return (sorted(bottom + top) if piece.is_king() else \
-                (sorted(bottom) if piece.is_red() else sorted(top))) \
-                    if is_sorted else (bottom + top if piece.is_king() else \
-                                       (bottom if piece.is_red() else top))
-        else:
-            return (sorted(bottom + top) if piece.is_king() else \
-                (sorted(bottom) if piece.is_white() else sorted(top))) \
-                    if is_sorted else (bottom + top if piece.is_king() else \
-                                       (bottom if piece.is_white() else top))
+        return (sorted(bottom + top) if piece.is_king() else \
+            (sorted(bottom) if piece.is_red() else sorted(top))) \
+                if is_sorted else (bottom + top if piece.is_king() else \
+                                    (bottom if piece.is_red() else top))
     return []
 
-def search_path(board, row, col, path, paths,my_color, is_sorted = False):
+def search_path(board, row, col, path, paths, is_sorted = False):
 
     path.append((row, col))
-    jumps = get_jumps(board, row, col,my_color, is_sorted)
+    jumps = get_jumps(board, row, col, is_sorted)
     if not jumps:
         paths.append(path)
     else:
@@ -72,15 +61,15 @@ def search_path(board, row, col, path, paths,my_color, is_sorted = False):
             col_mid = col + 1 if col_to > col else col - 1
             capture = board.get(row_mid, col_mid)
             board.remove(row_mid, col_mid)
-            search_path(board, row_to, col_to, copy.copy(path), paths,my_color)
+            search_path(board, row_to, col_to, copy.copy(path), paths)
             board.place(row_mid, col_mid, capture)
             board.remove(row_to, col_to)
             board.place(row, col, piece)
             
-def get_captures(board, row, col,mycolor, is_sorted = False):
+def get_captures(board, row, col, is_sorted = False):
     paths = []
     board_ = copy.copy(board)
-    search_path(board_, row, col, [], paths,mycolor, is_sorted)
+    search_path(board_, row, col, [], paths, is_sorted)
     if len(paths) == 1 and len(paths[0]) == 1:
         paths = []
     return paths

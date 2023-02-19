@@ -24,7 +24,6 @@ class Board(object):
                                                        (self.cell_size) * row+20 + self.cell_size // 2],
                                                        self.cell_size // 3) 
                     if piece.is_king():
-                        # dibujar una corona
                         x = ((self.cell_size) * col + self.cell_size // 2)-1
                         y = ((self.cell_size) * row+20 + self.cell_size // 2)-6
                         size = self.cell_size // 3
