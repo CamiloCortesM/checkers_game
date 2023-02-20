@@ -42,7 +42,7 @@ def heuristics(state):
                         w_pawn += 1
                         w_kingd += length - (row + 1)
                         w_safe += d
-    if turn == 'red':
+    if turn == 'white':
         red_count_heuristics = 3.125 * (((r_pawn + r_king * 2.0) - (w_pawn + w_king * 2.0)) /  (1.0 + ((r_pawn + r_king * 2.0) + (w_pawn + w_king * 2.0))))
         red_capture_heuristics = 1.0417 * ((r_captures - w_captures)/(1.0 + r_captures + w_captures))
         red_kingdist_heuristics = 1.429 * ((r_kingd - w_kingd)/(1.0 + r_kingd + w_kingd))
