@@ -60,6 +60,18 @@ def game_play_ai_vs_ai(screen,board):
     my_color,opponent_color = 'red','white'
     initialize(board)
     
+def capture_ai(move,board):
+    row,col = move
+    if(tools.get_jumps(board,row,col)):   
+        capture = tools.get_jumps(board,row,col) 
+        if capture:
+            apply_capture(board, [(row,col),capture[0]])
+            capture_ai(capture[0],board)
+    else:
+        return
+    
+    
+    
 def game_play_human_vs_ai(screen,board):
     (my_color, opponent_color) = tools.choose_color(screen,cfg)
     turn = my_color if my_color == 'red' else opponent_color
@@ -76,15 +88,16 @@ def game_play_human_vs_ai(screen,board):
                 move = ai.get_next_move(board, turn)
                 if type(move) == list: # move is a move
                     apply_capture(board, move)
+                    capture_ai(move[1],board)
                 if type(move) == tuple: # move is a jump
                     apply_move(board, move)
                 print("\t{:s} played {:s}.".format(turn, str(move)))
                 turn = my_color # change the turn
                 continue
             
-        jumps = find_jump(board,turn)
+        jumps = find_jump(board,turn) 
         
-        if len(jumps)>0 and moves==[]: 
+        if len(jumps)>0 and moves==[]:
             for jump in jumps:    
                 move_origin,moves_jumps = jump
                 for mv in moves_jumps:
@@ -115,11 +128,6 @@ def game_play_human_vs_ai(screen,board):
                         move_origin = None
                         moves = []
                         turn = "red" if turn == "white" else "white"
-                    elif apply_capture(board,move):
-                        piece_selected = None
-                        move_origin = None
-                        moves = []
-                        turn = "red" if turn == "white" else "white" 
                 if len(jumps)>0:
                     if (row,col) in moves:
                         for move_jump in pre_moves:

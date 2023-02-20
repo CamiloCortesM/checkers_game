@@ -42,7 +42,7 @@ def heuristics(state):
                         w_pawn += 1
                         w_kingd += length - (row + 1)
                         w_safe += d
-    if turn == 'white':
+    if turn == 'red':
         red_count_heuristics = 3.125 * (((r_pawn + r_king * 2.0) - (w_pawn + w_king * 2.0)) /  (1.0 + ((r_pawn + r_king * 2.0) + (w_pawn + w_king * 2.0))))
         red_capture_heuristics = 1.0417 * ((r_captures - w_captures)/(1.0 + r_captures + w_captures))
         red_kingdist_heuristics = 1.429 * ((r_kingd - w_kingd)/(1.0 + r_kingd + w_kingd))
@@ -85,11 +85,24 @@ def transition(state, action, ttype):
     depth = state[2]
     if ttype == "move":
         controller.apply_move(board, action)
-    elif ttype == "jump":
-        controller.apply_capture(board, action)
+    elif ttype == "jump":    
+        row,col = action[1]
+        if(controller.apply_capture(board, action)):
+            if(tools.get_jumps(board,row,col)):   
+                capture = tools.get_jumps(board,row,col) 
+                if capture:
+                    transition(state,[(row,col),capture[0]],"jump")
+                    return (board, turn, depth)       
+                
+                 
     turn = 'white' if state[1] == 'red' else 'red'
     depth += 1
     return (board, turn, depth)
+
+             
+             
+    
+    
 
 
 def maxvalue(state, maxdepth, alpha = None, beta = None):
@@ -199,5 +212,4 @@ def get_next_move(board, turn):
     state = (board, turn, 0)
     print("Thinking ...")
     move = alphabeta_search(state, 5)
-    print(move[0])
     return move[0]
