@@ -2,7 +2,6 @@ import pygame
 import cfg
 from modules import *
 import ai as ai
-import time
 
 def choose_game(screen,cfg):
     board = Board(8)
@@ -97,7 +96,7 @@ def capture_ai(move,board):
     
     
 def game_play_human_vs_ai(screen,board):
-    (my_color, opponent_color) = tools.choose_color(screen,cfg)
+    (my_color, opponent_color) = ("white","red")
     turn = my_color if my_color == 'red' else opponent_color
     initialize(board)
     piece_selected = None
@@ -109,7 +108,7 @@ def game_play_human_vs_ai(screen,board):
     while not is_game_finished(board):
         
         if turn == opponent_color: # if Turn of machine
-                move = ai.get_next_move(board, turn)
+                move = ai.get_next_move(board, opponent_color)
                 if type(move) == list: # move is a move
                     apply_capture(board, move)
                     capture_ai(move[1],board)
