@@ -61,47 +61,26 @@ def game_play_ai_vs_ai(screen,board):
     (my_color, opponent_color) = ("red","white") 
     turn = my_color if my_color == 'red' else opponent_color
     initialize(board)
-    moves = []
     piece_count = None
-    play = True
     while not is_game_finished(board):
         screen.fill((0,0,0))
         board.draw(screen)
         piece_count = count_pieces(board)   
         board.display(screen,cfg,turn,piece_count)
-        if moves: board.draw_moves(moves,screen)
-        if turn == opponent_color and play: # if Turn of machine
-                move = ai.get_next_move(board, turn)
-                if type(move) == list: # move is a move
-                    apply_capture(board, move)
-                    capture_ai(move[1],board)
-                if type(move) == tuple: # move is a jump
-                    apply_move(board, move)
-                print("\t{:s} played {:s}.".format(turn, str(move)))
-                time.sleep(1)
-                play = False
-                continue
-            
-        if turn == my_color and play: # if Turn of machine
-                move = ai.get_next_move(board, turn)
-                if type(move) == list: # move is a move
-                    apply_capture(board, move)
-                    capture_ai(move[1],board)
-                if type(move) == tuple: # move is a jump
-                    apply_move(board, move)
-                print("\t{:s} played {:s}.".format(turn, str(move)))
-                time.sleep(1)
-                play = False
-                continue
-            
+        
+
+        move = ai.get_next_move(board, turn)
+        if type(move) == list: # move is a move
+            apply_capture(board, move)
+            capture_ai(move[1],board)
+        if type(move) == tuple: # move is a jump
+            apply_move(board, move)
+        print("\t{:s} played {:s}.".format(turn, str(move)))
+        turn = "red" if turn == "white" else "white"
        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()     
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                turn = "red" if turn == "white" else "white"
-                play = True
-                
         pygame.display.update()
     endInterface(screen,get_winner(board),cfg)   
     

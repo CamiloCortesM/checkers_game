@@ -51,12 +51,6 @@ def search_path(board, row, col, path, paths, is_sorted = False):
             piece = copy.copy(board.get(row, col))
             board.remove(row, col)
             board.place(row_to, col_to, piece)
-            if (piece.color() == 'red' \
-                and row_to == board.get_length() - 1) \
-                    or (piece.color() == 'white' \
-                        and row_to == 0) \
-                            and (not piece.is_king()):
-                                piece.turn_king()
             row_mid = row + 1 if row_to > row else row - 1
             col_mid = col + 1 if col_to > col else col - 1
             capture = board.get(row_mid, col_mid)
