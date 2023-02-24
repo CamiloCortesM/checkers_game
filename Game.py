@@ -1,5 +1,6 @@
 import pygame
 import cfg
+import random
 from modules import *
 import ai as ai
 
@@ -68,7 +69,7 @@ def game_play_ai_vs_ai(screen,board):
         board.display(screen,cfg,turn,piece_count)
         
 
-        move = ai.get_next_move(board, turn)
+        move = ai.get_next_move(board, turn,random.randint(4,5))
         if type(move) == list: # move is a move
             apply_capture(board, move)
             capture_ai(move[1],board)
@@ -108,7 +109,7 @@ def game_play_human_vs_ai(screen,board):
     while not is_game_finished(board):
         
         if turn == opponent_color: # if Turn of machine
-                move = ai.get_next_move(board, opponent_color)
+                move = ai.get_next_move(board, opponent_color,6)
                 if type(move) == list: # move is a move
                     apply_capture(board, move)
                     capture_ai(move[1],board)

@@ -43,13 +43,13 @@ def heuristics(state):
                         w_kingd += length - (row + 1)
                         w_safe += d
     if turn == 'red':
-        red_count_heuristics = 3.354 * (((r_pawn + r_king * 2.0) - (w_pawn + w_king * 2.0)) / 1.0 + ((r_pawn + r_king * 2.0) + (w_pawn + w_king * 2.0)))
+        red_count_heuristics = 6.354 * (((r_pawn + r_king * 2.0) - (w_pawn + 1.0 + w_king * 2.0)) / 1.0 + ((r_pawn + r_king * 2.0) + (w_pawn + w_king * 2.0)))
         red_capture_heuristics = 1.7417 * ((r_captures - w_captures)/( 1.0 +r_captures + w_captures))
         red_kingdist_heuristics = 1.429 * ((r_kingd - w_kingd)/(1.0 + r_kingd + w_kingd))
         red_safe_heuristics = 5.263 * ((r_safe - w_safe)/( 1.0 + r_safe + w_safe))
         return red_count_heuristics + red_capture_heuristics + red_kingdist_heuristics + red_safe_heuristics
     else:
-        white_count_heuristics = 3.354 * (((w_pawn + w_king * 2.0) - (r_pawn + r_king * 2.0)) /  1.0 + (((r_pawn + r_king * 2.0) + (w_pawn + w_king * 2.0))))
+        white_count_heuristics = 6.354 * (((w_pawn + w_king * 2.0) - (r_pawn + 1.0 + r_king * 2.0)) /  1.0 + (((r_pawn + r_king * 2.0) + (w_pawn + w_king * 2.0))))
         white_capture_heuristics = 1.7416 * ((w_captures - r_captures)/(1.0 + r_captures + w_captures))
         white_kingdist_heuristics = 1.428 * ((w_kingd - r_kingd)/(1.0 + r_kingd + w_kingd))
         white_safe_heuristics = 5.263 * ((w_safe - r_safe)/(1.0 + r_safe + w_safe))
@@ -203,7 +203,7 @@ def alphabeta_search(state, maxdepth = None):
         return ("pass", -1)
     
 
-def get_next_move(board, turn):
+def get_next_move(board, turn,maxdepth = 4):
     """
     function to obtain the best play with alphabeta_search
     
@@ -211,5 +211,5 @@ def get_next_move(board, turn):
     """
     state = (board, turn, 0)
     print("Thinking ...")
-    move = alphabeta_search(state, 4)
+    move = alphabeta_search(state, maxdepth)
     return move[0]
