@@ -8,10 +8,14 @@ def get_moves(board, row, col, is_sorted = False):
     if piece:
         bottom = [(row + x, col + y) for (x, y) in down if (0 <= (row + x) < length) and (0 <= (col + y) < length) and board.is_free(row + x, col + y)]
         top = [(row + x, col + y) for (x, y) in up if (0 <= (row + x) < length) and (0 <= (col + y) < length) and board.is_free(row + x, col + y)]
-        
-        return (sorted(bottom + top) if piece.is_king() else (sorted(bottom) if piece.is_red() else sorted(top))) \
-                if is_sorted else (bottom + top if piece.is_king() else \
-                                    (bottom if piece.is_red() else top))
+        moves = (sorted(bottom + top) if piece.is_king() else (sorted(bottom) if piece.is_red() else sorted(top))) if is_sorted else (bottom + top if piece.is_king() else (bottom if piece.is_red() else top))
+        if not piece.is_king():
+            return moves
+        else:
+            for move in moves:
+                if move == piece.last_move:
+                    moves.remove(move)
+        return moves
     return []
 
 def get_jumps(board, row, col, is_sorted = False):

@@ -79,6 +79,8 @@ def apply_move(board, move):
     path_list = get_moves(board, row, col, is_sorted=False)
     if move[1] in path_list:
         piece = board.get(row, col)
+        if piece.is_king():
+            piece.set_last_move((row,col))
         if piece.is_red() and row_end == board.get_length()-1 \
         or piece.is_white() and row_end == 0:
             piece.turn_king()

@@ -4,6 +4,7 @@ class Piece(object):
         if color.isalpha():
             color = color.lower()
             if color == 'red' or color == 'white':
+                self.last_move = None
                 self._color = color
                 self._is_king  = is_king
             else:
@@ -23,6 +24,11 @@ class Piece(object):
     def is_king(self):
         return self._is_king
     
+    def set_last_move(self,last_move):
+        self.last_move = last_move
+        
+    def last_move(self):
+        return self.last_move
         
     def turn_king(self):
         self._is_king = True
