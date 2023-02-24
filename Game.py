@@ -76,6 +76,7 @@ def game_play_ai_vs_ai(screen,board):
         if type(move) == tuple: # move is a jump
             apply_move(board, move)
         print("\t{:s} played {:s}.".format(turn, str(move)))
+        board.display_terminal()
         turn = "red" if turn == "white" else "white"
        
         for event in pygame.event.get():

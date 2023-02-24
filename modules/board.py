@@ -82,3 +82,25 @@ class Board(object):
         if count is not None:
             text = font.render("Red: {:d}, White: {:d}".format(count[0], count[1]), True, (255, 255, 255))
             screen.blit(text, [0, -2])
+    
+    def __str__(self):
+        """
+        The string representation of the board.
+        """
+        vline = '\n' + (' ' * 2) + ('----' * self._length) + '-' + '\n'
+        numline = ' '.join([(' ' + str(i) + ' ') \
+                            for i in range(1, self._length + 1)])
+        str_ = '   ' + numline + vline
+        for r in range(0, self._length):
+            str_ += chr(97 + r) + ' |'
+            for c in range(0, self._length):
+                piece = self._cell[r][c]
+                if(piece):
+                    str_ += ' ' + piece.letter() + ' |'
+                else:    
+                    str_ += ' ' +  ' ' + ' |'
+            str_ += vline
+        return str_
+    
+    def display_terminal(self):
+        print(self)

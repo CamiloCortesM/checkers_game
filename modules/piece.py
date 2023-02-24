@@ -4,13 +4,17 @@ class Piece(object):
         if color.isalpha():
             color = color.lower()
             if color == 'red' or color == 'white':
-                self.last_move = None
+                self._last_move = None
                 self._color = color
                 self._is_king  = is_king
+                self._letter = 'r' if color == 'red' else 'w'
             else:
                 raise ValueError("A piece must be \'red\' or \'white\'.")
         else:
             raise ValueError("A piece must be \'red\' or \'white\'.")
+        
+    def letter(self):
+        return self._letter
         
     def color(self):
         return self._color
@@ -28,10 +32,11 @@ class Piece(object):
         self.last_move = last_move
         
     def last_move(self):
-        return self.last_move
+        return self._last_move
         
     def turn_king(self):
         self._is_king = True
+        self._letter = self._letter.upper()
         
     def turn_pawn(self):
         self.is_king = False
