@@ -72,6 +72,17 @@ def get_all_captures(board, color, is_sorted=False):
     return sorted(final_list, key=lambda x: (-len(x), x[0]))\
         if is_sorted else final_list
 
+def last_move(piece_now,board,row,col,color):
+    for r in range(8):
+        for c in range(8):
+            piece = board.get(r,c)
+            if piece and piece.color() == color:
+                if piece.is_king():
+                    piece.set_last_move(None)
+    if piece_now.is_king():
+        print("hola")
+        piece_now.set_last_move((row,col))
+    
 
 def apply_move(board, move):
     row, col = (move[0])
@@ -79,8 +90,7 @@ def apply_move(board, move):
     path_list = get_moves(board, row, col, is_sorted=False)
     if move[1] in path_list:
         piece = board.get(row, col)
-        if piece.is_king():
-            piece.set_last_move((row,col))
+        last_move(piece,board,row,col,piece.color())
         if piece.is_red() and row_end == board.get_length()-1 \
         or piece.is_white() and row_end == 0:
             piece.turn_king()
