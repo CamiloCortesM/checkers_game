@@ -80,7 +80,6 @@ def last_move(piece_now,board,row,col,color):
                 if piece.is_king():
                     piece.set_last_move(None)
     if piece_now.is_king():
-        print("hola")
         piece_now.set_last_move((row,col))
     
 

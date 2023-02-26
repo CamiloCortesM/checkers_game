@@ -69,7 +69,7 @@ def game_play_ai_vs_ai(screen,board):
         board.display(screen,cfg,turn,piece_count)
         
 
-        move = ai.get_next_move(board, turn,random.randint(4,5))
+        move = ai.get_next_move(board, turn,random.randint(4,6))
         if type(move) == list: # move is a move
             apply_capture(board, move)
             capture_ai(move[1],board)
