@@ -59,7 +59,7 @@ def game_play_socket(screen,board):
     
 def game_play_ai_vs_ai(screen,board):
     (my_color, opponent_color) = ("red","white") 
-    turn = my_color if my_color == 'red' else opponent_color
+    turn = my_color if my_color == 'white' else opponent_color
     initialize(board)
     piece_count = None
     while not is_game_finished(board):
@@ -69,7 +69,7 @@ def game_play_ai_vs_ai(screen,board):
         board.display(screen,cfg,turn,piece_count)
         
 
-        move = ai.get_next_move(board, turn,random.randint(4,6))
+        move = ai.get_next_move(board, turn,random.randint(2,4))
         if type(move) == list: # move is a move
             apply_capture(board, move)
             capture_ai(move[1],board)
@@ -99,7 +99,7 @@ def capture_ai(move,board):
     
 def game_play_human_vs_ai(screen,board):
     (my_color, opponent_color) = ("white","red")
-    turn = my_color if my_color == 'red' else opponent_color
+    turn = my_color if my_color == 'white' else opponent_color
     initialize(board)
     piece_selected = None
     moves = []
@@ -174,7 +174,7 @@ def game_play_human_vs_ai(screen,board):
 
 def game_play_human(screen,board):
     (my_color, opponent_color) = ("red","white")
-    turn = my_color if my_color == 'red' else opponent_color
+    turn = my_color if my_color == 'white' else opponent_color
     initialize(board)
     piece_selected = None
     moves = []
