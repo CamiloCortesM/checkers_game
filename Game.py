@@ -1,12 +1,12 @@
 import pygame
 import cfg
-import random
+from qtable import QTable
 import socket
 from modules import *
 import ai as ai
 
 
-def choose_game(screen, cfg):
+def choose_game(screen, cfg, qtable):
     board = Board(8)
     screen.fill((255, 255, 255))
     font_title = pygame.font.Font(cfg.FONTPATH, 45)
@@ -41,21 +41,22 @@ def choose_game(screen, cfg):
                 pygame.quit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_1:
-                    game_play_human_vs_ai(screen, board)
+                    game_play_human_vs_ai(screen, board,qtable)
                 elif event.key == pygame.K_2:
                     game_play_human(screen, board)
                 elif event.key == pygame.K_3:
-                    game_play_ai_vs_ai(screen, board)
+                    game_play_ai_vs_ai(screen, board, qtable)
                 elif event.key == pygame.K_4:
                     game_play_socket(screen, board)
         pygame.display.update()
 
 
 def main():
+    qtable = QTable()
     pygame.init()
     screen = pygame.display.set_mode(cfg.SCREENSIZE)
     pygame.display.set_caption("Damas Inglesas")
-    choose_game(screen, cfg)
+    choose_game(screen, cfg, qtable)
 
 
 def game_play_socket(screen, board):
@@ -86,7 +87,7 @@ def game_play_socket(screen, board):
                 turn = "red" if turn == "white" else "white"
             else:
                 for i in range(len(move)-1):
-                    apply_capture(board, (move[i],move[i+1]))
+                    apply_capture(board, (move[i], move[i+1]))
                 turn = "red" if turn == "white" else "white"
 
         jumps = find_jump(board, turn)
@@ -153,7 +154,7 @@ def game_play_socket(screen, board):
     endInterface(screen, get_winner(board), cfg)
 
 
-def game_play_ai_vs_ai(screen, board):
+def game_play_ai_vs_ai(screen, board, qtable):
     (my_color, opponent_color) = ("red", "white")
     turn = my_color if my_color == 'white' else opponent_color
     initialize(board)
@@ -164,7 +165,7 @@ def game_play_ai_vs_ai(screen, board):
         piece_count = count_pieces(board)
         board.display(screen, cfg, turn, piece_count)
 
-        move = ai.get_next_move(board, turn, random.randint(2, 4))
+        move = ai.get_next_move(board, turn, qtable, 4)
         if type(move) == list:  # move is a move
             apply_capture(board, move)
         if type(move) == tuple:  # move is a jump
@@ -191,7 +192,7 @@ def capture_ai(move, board):
         return
 
 
-def game_play_human_vs_ai(screen, board):
+def game_play_human_vs_ai(screen, board,qtable):
     (my_color, opponent_color) = ("white", "red")
     turn = my_color if my_color == 'white' else opponent_color
     initialize(board)
@@ -204,7 +205,7 @@ def game_play_human_vs_ai(screen, board):
     while not is_game_finished(board):
 
         if turn == opponent_color:  # if Turn of machine
-            move = ai.get_next_move(board, opponent_color, 6)
+            move = ai.get_next_move(board, opponent_color, qtable,4)
             if type(move) == list:  # move is a move
                 apply_capture(board, move)
                 capture_ai(move[1], board)
