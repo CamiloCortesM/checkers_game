@@ -81,8 +81,8 @@ def choose_color(screen,cfg):
     font_title = pygame.font.Font(cfg.FONTPATH, 45)
     font = pygame.font.Font(cfg.FONTPATH, 25)
     tfont = font_title.render("Choose a color:",True,(255,0,0))
-    cfont1 = font.render("Enter w for play with white",True,(0,0,0))
-    cfont2 = font.render("Enter r for play with red",True,(0,0,0))
+    cfont1 = font.render("Enter w to play with white",True,(0,0,0))
+    cfont2 = font.render("Enter r to play with red",True,(0,0,0))
     
     trect = tfont.get_rect()
     crect1 = cfont1.get_rect()
@@ -108,22 +108,36 @@ def choose_color(screen,cfg):
 
 def endInterface (screen,winner,cfg):
     screen.fill((255,255,255))
-    font_title = pygame.font.Font(cfg.FONTPATH, 45)
-    font = pygame.font.Font(cfg.FONTPATH, 25)
+    font_title = pygame.font.Font(cfg.FONTPATH, 40)
+    font = pygame.font.Font(cfg.FONTPATH, 22)
+    font1 = pygame.font.Font(cfg.FONTPATH, 16)
     title = font_title.render("The game is over",True,(255,0,0))
     cfont = font.render("the winner is: {}".format(winner) if winner != 'draw' else " {} ".format(winner),True,(0,0,0))
+    cfont1 = font1.render("Enter 1 to return to the menu", True, (0, 0, 0))
+    cfont2 = font1.render("Enter any key to exit", True, (0, 0, 0))
     trect = title.get_rect()
     crect = cfont.get_rect()
-    trect.midtop = (cfg.SCREENSIZE[0]/2,cfg.SCREENSIZE[1]/3.5)
-    crect.midtop = (cfg.SCREENSIZE[0]/2,cfg.SCREENSIZE[1]/1.8)
+    crect1 = cfont1.get_rect()
+    crect2 = cfont2.get_rect()
+    trect.midtop = (cfg.SCREENSIZE[0]/2,cfg.SCREENSIZE[1]/4.5)
+    crect.midtop = (cfg.SCREENSIZE[0]/2,cfg.SCREENSIZE[1]/2.5)
+    crect1.midtop = (cfg.SCREENSIZE[0]/2,cfg.SCREENSIZE[1]/2)
+    crect2.midtop = (cfg.SCREENSIZE[0]/2,cfg.SCREENSIZE[1]/1.7)
     
     screen.blit(title,trect)
     screen.blit(cfont,crect)
+    screen.blit(cfont1,crect1)
+    screen.blit(cfont2,crect2)
     
     while True:  
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()         
+                pygame.quit()     
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    return 
+                else:
+                    pygame.quit() 
         pygame.display.update()
 
     
