@@ -1,5 +1,5 @@
 import random
-from modules import tools,controller
+from modules import tools, controller
 
 
 class QTable:
@@ -19,28 +19,28 @@ class QTable:
         old_value = self.get_value(state, action)
         if player == "white":
             board_pieces = controller.count_pieces(state[0])
-            (red, white)=board_pieces
-            reward = white-red
+            (red, white) = board_pieces
+            reward = (white-red)+(len(self.get_actions(state))/97)
         else:
             board_pieces = controller.count_pieces(state[0])
-            (red, white)=board_pieces
-            reward = red-white
+            (red, white) = board_pieces
+            reward = (red-white)+(len(self.get_actions(state))/97)
         new_value = (1 - alpha) * old_value + alpha * \
-            (reward + gamma )
+            (reward + gamma)
         self.table[state][action] = new_value
 
     def get_actions(self, state):
-        board, turn = state[0], state[1]
-        actions = []
+        board, player = state[0], state[3]
+        actions = 0
         for row in range(board.get_length()):
             for col in range(board.get_length()):
                 piece = board.get(row, col)
-                if piece and piece.color() == turn:
+                if piece and piece.color() == player:
                     moves = tools.get_moves(board, row, col)
                     captures = tools.get_captures(board, row, col)
                     if captures:
                         moves = captures
-                    actions += [(row, col, r, c) for r, c in moves]
+                    actions += len(moves)
         return actions
 
     def get_best_action(self, state, epsilon=0.1):
