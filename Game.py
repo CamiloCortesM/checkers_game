@@ -1,5 +1,6 @@
 import pygame
 import cfg
+import random
 from qtable import QTable
 import socket
 from modules import *
@@ -12,10 +13,10 @@ def choose_game(screen, cfg, qtable):
     font_title = pygame.font.Font(cfg.FONTPATH, 45)
     font = pygame.font.Font(cfg.FONTPATH, 25)
     tfont = font_title.render("Choose game mode:", True, (255, 0, 0))
-    cfont1 = font.render("Enter 1 for play human vs AI", True, (0, 0, 0))
-    cfont2 = font.render("Enter 2 for play human vs human", True, (0, 0, 0))
-    cfont3 = font.render("Enter 3 for play AI vs AI", True, (0, 0, 0))
-    cfont4 = font.render("Enter 4 for play ONLINE", True, (0, 0, 0))
+    cfont1 = font.render("Ingresa 1 to play human vs AI", True, (0, 0, 0))
+    cfont2 = font.render("Enter 2 to play human vs human", True, (0, 0, 0))
+    cfont3 = font.render("Enter 3 to play AI vs AI", True, (0, 0, 0))
+    cfont4 = font.render("Enter 4 to play ONLINE", True, (0, 0, 0))
 
     trect = tfont.get_rect()
     crect1 = cfont1.get_rect()
@@ -154,6 +155,7 @@ def game_play_socket(screen, board):
     endInterface(screen, get_winner(board), cfg)
 
 
+
 def game_play_ai_vs_ai(screen, board, qtable):
     (my_color, opponent_color) = ("red", "white")
     turn = my_color if my_color == 'white' else opponent_color
@@ -165,7 +167,7 @@ def game_play_ai_vs_ai(screen, board, qtable):
         piece_count = count_pieces(board)
         board.display(screen, cfg, turn, piece_count)
 
-        move = ai.get_next_move(board, turn, qtable, 4)
+        move = ai.get_next_move(board, turn, qtable, random.randint(2,4))
         if type(move) == list:  # move is a move
             apply_capture(board, move)
         if type(move) == tuple:  # move is a jump
@@ -178,7 +180,9 @@ def game_play_ai_vs_ai(screen, board, qtable):
             if event.type == pygame.QUIT:
                 pygame.quit()
         pygame.display.update()
+    print(qtable.table)
     endInterface(screen, get_winner(board), cfg)
+    choose_game(screen, cfg, qtable)
 
 
 def capture_ai(move, board):
@@ -267,6 +271,7 @@ def game_play_human_vs_ai(screen, board,qtable):
             board.draw_moves(moves, screen)
         pygame.display.update()
     endInterface(screen, get_winner(board), cfg)
+    choose_game(screen, cfg, qtable)
 
 
 def game_play_human(screen, board):
